@@ -1,0 +1,1 @@
+Crear una simulación 3D interactiva para mostrar cómo usar un extintor o un hidrante, integrable en Bitrix24 mediante un iframe o widget.

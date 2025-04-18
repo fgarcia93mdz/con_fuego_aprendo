@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Con Fuego Aprendo - Simulador</title>
+  <title>🔥 Simulador Educativo de Extintores</title>
+  <link rel="icon" href="extintor.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     :root {
@@ -12,537 +13,250 @@
       --blanco: #ffffff;
       --gris: #f4f4f4;
       --negro: #1a1a1a;
-      --verde-wsp: #25D366;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html,
     body {
       margin: 0;
-      padding: 0;
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, var(--gris), var(--blanco));
       color: var(--negro);
-      height: 100%;
-    }
-
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
       overflow-x: hidden;
     }
 
-    #app {
-      width: 100%;
-      max-width: 600px;
-      background: var(--blanco);
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 100px;
-      /* deja lugar a la guía */
-    }
-
-    #startScreen,
-    #overlay,
-    #finalScreen {
-      display: none;
-      flex-direction: column;
-      align-items: center;
+    header {
+      background: var(--rojo);
+      color: white;
       text-align: center;
-      opacity: 0;
-      transition: opacity 0.8s ease;
-      width: 100%;
+      padding: 2rem 1rem 5rem;
+      position: relative;
     }
 
-    #startScreen.active,
-    #overlay.active,
-    #finalScreen.active {
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    #guide {
+      position: absolute;
+      bottom: -30px;
+      left: 50px;
+      width: 70px;
+      z-index: 10;
+    }
+
+    #globo {
+      position: absolute;
+      bottom: 70px;
+      left: 100px;
+      background: var(--blanco);
+      color: var(--negro);
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 250px;
+      display: none;
+      font-size: 15px;
+      z-index: 11;
+    }
+
+    #globo::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      /* ↘ ajusta esto para que apunte exacto a la boca */
+      border-width: 10px 10px 0 10px;
+      border-style: solid;
+      border-color: var(--blanco) transparent transparent transparent;
+    }
+
+
+    .slider-container {
+      overflow: hidden;
+      max-width: 100%;
+      margin: 2rem auto;
+    }
+
+    .cards-wrapper {
       display: flex;
-      opacity: 1;
-    }
-
-    input {
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-top: 10px;
+      transition: transform 0.4s ease-in-out;
       width: 100%;
     }
 
-    button {
+    .card {
+      flex: 0 0 100%;
+      max-width: 100%;
+      padding: 1rem;
+      margin: auto;
+      text-align: center;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+
+    .card img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      margin: 0.5rem 0;
+      color: var(--rojo);
+    }
+
+    .slider-nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.5rem auto;
+    }
+
+    .arrow {
+      font-size: 2rem;
       background: var(--rojo);
       color: white;
       border: none;
-      border-radius: 8px;
-      padding: 12px 24px;
-      font-size: 16px;
+      border-radius: 50%;
+      padding: 0.5rem 1rem;
       cursor: pointer;
-      margin-top: 15px;
-      transition: 0.2s;
+      transition: background 0.3s;
     }
 
-    button:hover {
+    .arrow:hover {
       background: #b00410;
     }
 
-    #overlay img {
-      width: 100%;
-      max-height: 200px;
-      object-fit: contain;
-      border-radius: 12px;
-      margin-bottom: 16px;
-    }
-
-    .botones {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-    }
-
-    /* ✅ SURICATA SIEMPRE VISIBLE */
-    #guide {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      width: 90px;
-      z-index: 1000;
-    }
-
-    /* ✅ GLOBO FIJO Y RESPONSIVE */
-    #globo {
-      position: fixed;
-      bottom: 120px;
-      left: 120px;
-      background: var(--blanco);
-      padding: 14px;
-      font-size: 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      max-width: 260px;
-      display: none;
-      z-index: 1001;
-    }
-
-    #volumeControl {
-      position: fixed;
-      right: 10px;
-      bottom: 10px;
-      background: var(--blanco);
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      z-index: 999;
-    }
-
-    #tarjetaFinal {
-      background: linear-gradient(135deg, #ffffff, #f1f1f1);
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      margin: 20px 0;
-      width: 100%;
-      animation: fadeIn 1s ease forwards;
-    }
-
-    #insigniaFinal {
-      font-size: 2rem;
-      animation: bounce 1s infinite alternate;
-    }
-
-    #logoFinal {
-      width: 100px;
-      margin-bottom: 10px;
-    }
-
-    #compartirBtns {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    #compartirBtns button {
-      background-color: var(--verde-wsp);
-      border: none;
+    .start-button {
+      display: block;
+      margin: 2rem auto;
+      padding: 1rem 2rem;
+      background: var(--rojo);
       color: white;
-      padding: 10px 16px;
-      font-size: 15px;
-      margin: 5px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
     }
 
-    #compartirBtns img {
-      width: 20px;
-      height: 20px;
+    .start-button:hover {
+      background: #b00410;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: #777;
     }
 
-    @keyframes bounce {
-      from {
-        transform: translateY(0);
-      }
-
-      to {
-        transform: translateY(-8px);
-      }
-    }
-
-    /* ✅ RESPONSIVE EN MOBILE */
-    @media screen and (max-width: 480px) {
-      #app {
-        padding: 16px;
-        border-radius: 12px;
-        box-shadow: none;
-        margin-bottom: 120px;
-        /* más espacio para guía */
-      }
-
+    @media screen and (max-width: 600px) {
       #guide {
-        width: 70px;
-        left: 12px;
-        bottom: 10px;
+        width: 60px;
+        left: 10px;
+        bottom: -25px;
       }
 
       #globo {
-        bottom: 100px;
-        left: 80px;
-        font-size: 14px;
-        max-width: 80vw;
+        bottom: 60px;
+        left: 75px;
       }
 
-      .botones button {
-        font-size: 14px;
-        padding: 10px;
+      #globo::after {
+        left: 20px;
       }
 
-      #volumeControl {
-        bottom: 8px;
-        right: 8px;
-        transform: scale(0.9);
+      .card img {
+        max-height: 150px;
       }
     }
   </style>
 </head>
 
 <body>
-  <div id="app">
-    <div id="startScreen" class="active">
-      <h2>¡Bienvenido a Con Fuego Aprendo!</h2>
-      <p>Ingresá tu nombre:</p>
-      <input type="text" id="nombreUsuario" placeholder="Ej: Franco">
-      <button onclick="iniciarSimulador()">Comenzar</button>
-    </div>
+  <header>
+    <h1>🔥 Simulador Educativo de Extintores</h1>
+    <p>Explorá cada tarjeta para aprender antes de jugar el simulador</p>
+    <img id="guide" src="guide.png" alt="Guía">
+    <div id="globo"></div>
+  </header>
 
-    <div id="overlay">
-      <img id="escena-img" src="" alt="Escena">
-      <h2 id="pregunta"></h2>
-      <div class="botones">
-        <button onclick="responder('A')">Usar Extintor A</button>
-        <button onclick="responder('B')">Usar Extintor B</button>
-        <button onclick="responder('C')">Usar Extintor C</button>
+  <div class="slider-container">
+    <div class="cards-wrapper" id="slider">
+      <div class="card" onclick="hablar('Clase A: incluye papel, cartón, madera y tela. Se apagan con agua o espuma.')">
+        <img src="oficina_papelera.png" alt="Clase A">
+        <h3>Clase A - Materiales sólidos</h3>
+        <p>Incluyen papel, cartón, madera y tela. Se apagan con agua o espuma.</p>
       </div>
-      <p id="puntaje"></p>
-    </div>
-
-    <div id="finalScreen">
-      <div id="tarjetaFinal">
-        <h2 id="insigniaFinal"></h2>
-        <p id="fraseFinal"></p>
-        <p id="nombreFinal"></p>
+      <div class="card" onclick="hablar('Clase B: aceites, pinturas y combustibles. Nunca uses agua.')">
+        <img src="cocina_aceite.png" alt="Clase B">
+        <h3>Clase B - Líquidos inflamables</h3>
+        <p>Usá espuma o polvo químico seco. Nunca uses agua.</p>
       </div>
-      <div id="compartirBtns">
-        <button onclick="compartirWhatsApp()">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WSP">
-          Compartir por WhatsApp
-        </button>
+      <div class="card" onclick="hablar('Clase C: incendios eléctricos. Usá CO2 o polvo seco. Nunca agua.')">
+        <img src="tablero_electrico.png" alt="Clase C">
+        <h3>Clase C - Equipos eléctricos</h3>
+        <p>Usá CO₂ o polvo químico seco. Nunca uses agua.</p>
       </div>
-      <button onclick="location.reload()">Volver a empezar</button>
+      <div class="card" onclick="hablar('Vehículos: usan extintores clase B por la nafta.')">
+        <img src="auto_incendiado.png" alt="Vehículos">
+        <h3>Incendio en vehículos</h3>
+        <p>Usá extintores clase B para líquidos inflamables como nafta.</p>
+      </div>
+      <div class="card" onclick="hablar('Escuela o biblioteca: libros y madera. Clase A.')">
+        <img src="escuela_biblioteca.png" alt="Biblioteca">
+        <h3>Escuela o Biblioteca</h3>
+        <p>Materiales sólidos como libros y muebles. Usá agua o espuma.</p>
+      </div>
     </div>
   </div>
 
-  <div id="globo"></div>
-  <img id="guide" src="guide.png" alt="Guía">
-  <!-- 
-<div id="volumeControl">
-    🔊
-    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.05">
-    <button onclick="toggleMute()">🔇</button>
-</div>
--->
-  <audio id="bgMusic" src="background-music.mp3" autoplay loop></audio>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <div class="slider-nav">
+    <button class="arrow" onclick="mover(-1)"><i class="fas fa-chevron-left"></i></button>
+    <button class="arrow" onclick="mover(1)"><i class="fas fa-chevron-right"></i></button>
+  </div>
+
+  <button class="start-button" onclick="window.location.href='simulador.html'">🧯 ¡Estoy listo para Jugar! 🧯</button>
+
+  <footer>
+    &copy; 2025 Maxiseguridad Industrial &middot; Simulador Educativo de Extintores
+  </footer>
+
   <script>
-    const escenas = [
-      {
-        pregunta: "Una papelera se incendia en la oficina.",
-        imagen: "oficina_papelera.png",
-        correcto: "A",
-        feedback: "Correcto. El papel es un material combustible de clase A, que incluye madera, cartón y otros sólidos inflamables. Estos materiales se apagan con extintores de agua o espuma.",
-        incorrecto: "Incorrecto. El papel pertenece a la clase A, que incluye materiales sólidos como madera y cartón. Necesitas un extintor de agua o espuma para apagar este tipo de fuego."
-      },
-      {
-        pregunta: "Una sartén con aceite se prende fuego.",
-        imagen: "cocina_aceite.png",
-        correcto: "B",
-        feedback: "Correcto. Los líquidos inflamables como aceites y grasas pertenecen a la clase B. Usa un extintor de espuma o polvo químico seco para sofocar el fuego sin expandirlo.",
-        incorrecto: "Incorrecto. Nunca uses agua en fuegos de clase B, ya que puede hacer que el aceite se expanda y empeore el incendio. Usa un extintor de espuma o polvo químico seco."
-      },
-      {
-        pregunta: "Tablero eléctrico chispea.",
-        imagen: "tablero_electrico.png",
-        correcto: "C",
-        feedback: "Correcto. Los equipos eléctricos en llamas son de clase C. Usa un extintor de dióxido de carbono (CO2) o polvo químico seco, ya que no conducen electricidad.",
-        incorrecto: "Incorrecto. Nunca uses agua en fuegos eléctricos, ya que el agua es conductora y puede causar electrocución. Usa un extintor de CO2 o polvo químico seco."
-      },
-      {
-        pregunta: "Auto incendiado.",
-        imagen: "auto_incendiado.png",
-        correcto: "B",
-        feedback: "Correcto. Los vehículos suelen contener líquidos inflamables como gasolina, que pertenecen a la clase B. Usa un extintor de espuma o polvo químico seco.",
-        incorrecto: "Incorrecto. Los incendios en vehículos son de clase B debido a los líquidos inflamables como gasolina. Usa un extintor de espuma o polvo químico seco para apagarlos."
-      },
-      {
-        pregunta: "Fuego en biblioteca escolar.",
-        imagen: "escuela_biblioteca.png",
-        correcto: "A",
-        feedback: "Correcto. Los libros y muebles de madera son materiales sólidos de clase A. Usa un extintor de agua o espuma para apagar este tipo de fuego.",
-        incorrecto: "Incorrecto. Los materiales sólidos como libros y madera pertenecen a la clase A. Necesitas un extintor de agua o espuma para apagar este tipo de incendio."
-      },
-      {
-        pregunta: "Fuego en depósito de pintura.",
-        imagen: "almacen_pinturas.png",
-        correcto: "B",
-        feedback: "Correcto. Las pinturas y solventes son líquidos inflamables de clase B. Usa un extintor de espuma o polvo químico seco para sofocar el fuego.",
-        incorrecto: "Incorrecto. Las pinturas y solventes son líquidos inflamables de clase B. Nunca uses agua, ya que puede expandir el fuego. Usa un extintor de espuma o polvo químico seco."
-      },
-      {
-        pregunta: "Incendio en cocina de restaurante.",
-        imagen: "cocina_restaurante.png",
-        correcto: "B",
-        feedback: "Correcto. Los aceites y grasas en la cocina son de clase B. Usa un extintor de espuma o polvo químico seco para apagar el fuego sin expandirlo.",
-        incorrecto: "Incorrecto. Los incendios en cocinas suelen ser de clase B debido a los aceites y grasas. Nunca uses agua, ya que puede empeorar el incendio. Usa un extintor de espuma o polvo químico seco."
-      },
-      {
-        pregunta: "Maquinaria eléctrica en taller.",
-        imagen: "taller_maquinaria.png",
-        correcto: "C",
-        feedback: "Correcto. Los incendios en equipos eléctricos son de clase C. Usa un extintor de CO2 o polvo químico seco, ya que no conducen electricidad.",
-        incorrecto: "Incorrecto. Los incendios en equipos eléctricos son de clase C. Nunca uses agua, ya que puede causar electrocución. Usa un extintor de CO2 o polvo químico seco."
-      },
-      {
-        pregunta: "Sala de servidores con fuego.",
-        imagen: "sala_servidores.png",
-        correcto: "C",
-        feedback: "Correcto. Los equipos informáticos en llamas son de clase C. Usa un extintor de CO2 para evitar daños adicionales y apagar el fuego de manera segura.",
-        incorrecto: "Incorrecto. Los incendios en equipos informáticos son de clase C. Usa un extintor de CO2 para apagar el fuego sin causar daños adicionales."
-      }
-    ];
+    const globo = document.getElementById("globo");
+    let index = 0;
 
-    let usuario = "";
-    let aciertos = 0;
-    let ronda = 0;
-    let preguntas = [];
-    let fireSprite;
-
-    const bgMusic = document.getElementById("bgMusic");
-    bgMusic.volume = 0.15;
-
-    document.getElementById("volumeSlider").addEventListener("input", e => {
-      bgMusic.volume = e.target.value;
-    });
-
-    function toggleMute() {
-      bgMusic.muted = !bgMusic.muted;
-    }
-
-    function iniciarSimulador() {
-      usuario = document.getElementById("nombreUsuario").value || "Usuario";
-      document.getElementById("startScreen").classList.remove("active");
-      document.getElementById("overlay").classList.add("active");
-      preguntas = escenas.sort(() => Math.random() - 0.5).slice(0, 5);
-      cargarEscenario();
-    }
-
-
-    function speak(texto, callback) {
-      const globo = document.getElementById("globo");
+    function hablar(texto) {
       globo.innerText = texto;
       globo.style.display = "block";
-
       const msg = new SpeechSynthesisUtterance(texto);
       msg.lang = 'es-ES';
-      msg.rate = 0.85;
-
+      msg.rate = 0.95;
       msg.onend = () => {
         globo.style.display = "none";
-        if (callback) callback();
       };
-
       speechSynthesis.cancel();
       speechSynthesis.speak(msg);
     }
 
+    window.onload = () => {
+      hablar('Bienvenido al Simulador Educativo de Extintores. Deslizá para aprender y tocá para escuchar cada tarjeta.');
+    };
 
-    function cargarEscenario() {
-      const esc = preguntas[ronda];
-      document.getElementById("pregunta").innerText = esc.pregunta;
-      document.getElementById("escena-img").src = esc.imagen;
-      if (fireSprite) fireSprite.visible = true;
-      speak(`${usuario}, ${esc.pregunta}`);
+    function mover(dir) {
+      const slider = document.getElementById('slider');
+      const total = slider.children.length;
+      index += dir;
+      if (index < 0) index = 0;
+      if (index >= total) index = total - 1;
+      slider.style.transform = `translateX(-${index * 100}%)`;
     }
-
-    function responder(tipo) {
-      const esc = preguntas[ronda];
-      const texto = tipo === esc.correcto ? esc.feedback : esc.incorrecto;
-
-      if (tipo === esc.correcto) {
-        aciertos++;
-      }
-
-      document.getElementById("puntaje").innerText = `Puntaje: ${aciertos * 10} puntos`;
-
-      speak(texto, () => {
-        setTimeout(siguiente, 800);
-      });
-    }
-
-
-    function siguiente() {
-      ronda++;
-      if (ronda >= preguntas.length) {
-        mostrarResultado();
-      } else {
-        cargarEscenario();
-      }
-    }
-
-    function mostrarResultado() {
-      let insignia = "🥉 Aprendiz Nivel 1";
-      if (aciertos >= 4) insignia = "🥈 Asistente de Emergencias";
-      if (aciertos === 5) insignia = "🥇 Bombero Junior";
-
-      document.getElementById("overlay").classList.remove("active");
-      document.getElementById("finalScreen").classList.add("active");
-
-      document.getElementById("insigniaFinal").innerText = `Insignia: ${insignia}`;
-      document.getElementById("fraseFinal").innerText = `¡Muy bien ${usuario}!`;
-      document.getElementById("nombreFinal").innerText = `Acertaste ${aciertos} de ${preguntas.length}`;
-      speak(`Simulación finalizada. Tu resultado: ${insignia}`);
-    }
-
-
-    function compartirWhatsApp() {
-      const mensaje = `¡Hola! Completé el simulador Con Fuego Aprendo 🚒🔥 y gané una insignia 🥇. Probalo vos también en https://www.maxiseguridad.com`;
-      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
-      window.open(url, '_blank');
-    }
-    function descargarImagen() {
-      html2canvas(document.getElementById("tarjetaFinal")).then(canvas => {
-        const link = document.createElement("a");
-        link.href = canvas.toDataURL("image/png");
-        link.download = "tarjeta_con_fuego_aprendo.png";
-        link.click();
-      });
-    }
-    document.getElementById("volumeSlider").addEventListener("input", function () {
-      bgMusic.volume = this.value;
-    });
-    document.getElementById("bgMusic").volume = 0.05;
-    document.getElementById("bgMusic").play();
-    document.getElementById("bgMusic").loop = true;
-    document.getElementById("bgMusic").muted = false;
-    document.getElementById("bgMusic").addEventListener("ended", function () {
-      this.currentTime = 0;
-      this.play();
-    });
-    document.getElementById("bgMusic").addEventListener("play", function () {
-      this.muted = false;
-    });
-    document.getElementById("bgMusic").addEventListener("pause", function () {
-      this.muted = true;
-    });
-    document.getElementById("bgMusic").addEventListener("volumechange", function () {
-      this.muted = this.volume === 0;
-    });
-    document.getElementById("bgMusic").addEventListener("click", function () {
-      this.muted = !this.muted;
-    });
-
-    // THREE.js
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    const light = new THREE.PointLight(0xffffff, 2);
-    light.position.set(5, 5, 5);
-    scene.add(light);
-
-    const loader = new THREE.GLTFLoader();
-    loader.load("extintor.glb", gltf => {
-      const model = gltf.scene;
-      model.position.set(-1.5, -1, 0);
-      model.scale.set(2, 2, 2);
-      scene.add(model);
-    });
-
-    const fireTexture = new THREE.TextureLoader().load("fuego-sprite.png");
-    fireTexture.wrapS = fireTexture.wrapT = THREE.RepeatWrapping;
-    const tiles = 5;
-    fireTexture.repeat.set(1 / tiles, 1 / tiles);
-
-    const fireMat = new THREE.SpriteMaterial({ map: fireTexture, transparent: true });
-    fireSprite = new THREE.Sprite(fireMat);
-    fireSprite.scale.set(2, 2, 1);
-    fireSprite.position.set(1.5, 0, 0);
-    scene.add(fireSprite);
-
-    const clock = new THREE.Clock();
-    let tile = 0;
-    function animate() {
-      requestAnimationFrame(animate);
-      const delta = clock.getDelta() * 1000;
-      if (delta > 100) {
-        tile = (tile + 1) % 25;
-        fireTexture.offset.x = (tile % tiles) / tiles;
-        fireTexture.offset.y = Math.floor(tile / tiles) / tiles;
-      }
-      renderer.render(scene, camera);
-    }
-
-    camera.position.z = 5;
-    animate();
   </script>
 </body>
 

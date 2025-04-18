@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧯Simulador Educativo de Extintores 🔥</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --rojo: #e30613;
+      --blanco: #ffffff;
+      --gris: #f4f4f4;
+      --negro: #1a1a1a;
+      --verde-wsp: #25D366;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--gris), var(--blanco));
+      color: var(--negro);
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 600px;
+      background: var(--blanco);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 100px;
+      /* deja lugar a la guía */
+    }
+
+    #startScreen,
+    #overlay,
+    #finalScreen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      width: 100%;
+    }
+
+    #startScreen.active,
+    #overlay.active,
+    #finalScreen.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    button {
+      background: var(--rojo);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #b00410;
+    }
+
+    #overlay img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .botones {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    #guide {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 90px;
+      z-index: 1000;
+    }
+
+    #globo {
+      position: fixed;
+      bottom: 120px;
+      left: 120px;
+      background: var(--blanco);
+      padding: 14px;
+      font-size: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 260px;
+      display: none;
+      z-index: 1001;
+    }
+
+    #volumeControl {
+      position: fixed;
+      right: 10px;
+      bottom: 10px;
+      background: var(--blanco);
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 999;
+    }
+
+    #tarjetaFinal {
+      background: linear-gradient(135deg, #ffffff, #f1f1f1);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      margin: 20px 0;
+      width: 100%;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    #insigniaFinal {
+      font-size: 2rem;
+      animation: bounce 1s infinite alternate;
+    }
+
+    #logoFinal {
+      width: 100px;
+      margin-bottom: 10px;
+    }
+
+    #compartirBtns {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #compartirBtns button {
+      background-color: var(--verde-wsp);
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      font-size: 15px;
+      margin: 5px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    #compartirBtns img {
+      width: 20px;
+      height: 20px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bounce {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-8px);
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      #app {
+        padding: 16px;
+        border-radius: 12px;
+        box-shadow: none;
+        margin-bottom: 120px;
+      }
+
+      #guide {
+        width: 70px;
+        left: 12px;
+        bottom: 10px;
+      }
+
+      #globo {
+        bottom: 100px;
+        left: 80px;
+        font-size: 14px;
+        max-width: 80vw;
+      }
+
+      .botones button {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      #volumeControl {
+        bottom: 8px;
+        right: 8px;
+        transform: scale(0.9);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div id="startScreen" class="active">
+      <h2>¡Bienvenido al Simulador Educativo de Extintores!</h2>
+      <p>Ingresá tu nombre:</p>
+      <input type="text" id="nombreUsuario" placeholder="Ej: Franco o María">
+      <button onclick="iniciarSimulador()">Comenzar</button>
+    </div>
+
+    <div id="overlay">
+      <img id="escena-img" src="" alt="Escena">
+      <h2 id="pregunta"></h2>
+      <div class="botones">
+        <button onclick="responder('A')">Usar Extintor clase A</button>
+        <button onclick="responder('B')">Usar Extintor clase B</button>
+        <button onclick="responder('C')">Usar Extintor clase C</button>
+      </div>
+      <p id="puntaje"></p>
+    </div>
+
+    <div id="finalScreen">
+      <div id="tarjetaFinal">
+        <h2 id="insigniaFinal"></h2>
+        <p id="fraseFinal"></p>
+        <p id="nombreFinal"></p>
+      </div>
+      <div id="compartirBtns">
+        <button onclick="compartirWhatsApp()">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WSP">
+          Compartir por WhatsApp
+        </button>
+      </div>
+      <button onclick="location.reload()">Volver a empezar</button>
+    </div>
+  </div>
+
+  <div id="globo"></div>
+  <img id="guide" src="guide.png" alt="Guía">
+  <!-- 
+<div id="volumeControl">
+    🔊
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.05">
+    <button onclick="toggleMute()">🔇</button>
+</div>
+-->
+  <audio id="bgMusic" src="background-music.mp3" autoplay loop></audio>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    const escenas = [
+      {
+        pregunta: "Una papelera se incendia en la oficina.",
+        imagen: "oficina_papelera.png",
+        correcto: "Clase A",
+        feedback: "¡Correcto! El papel es un material de clase A, que incluye madera, cartón y otros sólidos inflamables. Estos materiales se apagan mejor con extintores de agua o espuma, ya que enfrían el fuego y eliminan el oxígeno.",
+        incorrecto: "No es correcto. El papel pertenece a la clase A, que incluye materiales sólidos como madera y cartón. Usar agua o espuma es ideal porque enfrían el fuego y evitan que se propague."
+      },
+      {
+        pregunta: "Una sartén con aceite se prende fuego.",
+        imagen: "cocina_aceite.png",
+        correcto: "Clase B",
+        feedback: "¡Bien hecho! Los líquidos inflamables como aceites y grasas son de clase B. Usa un extintor de espuma o polvo químico seco para sofocar el fuego sin expandirlo. Nunca uses agua, ya que puede hacer que el aceite salpique y empeore el incendio.",
+        incorrecto: "No es correcto. Los líquidos inflamables como aceites son de clase B. Usar agua puede hacer que el aceite salpique y empeore el incendio. Usa un extintor de espuma o polvo químico seco para sofocar el fuego de manera segura."
+      },
+      {
+        pregunta: "Tablero eléctrico chispea.",
+        imagen: "tablero_electrico.png",
+        correcto: "Clase C",
+        feedback: "¡Correcto! Los incendios eléctricos son de clase C. Usa un extintor de dióxido de carbono (CO2) o polvo químico seco, ya que no conducen electricidad y apagan el fuego sin dañar los equipos.",
+        incorrecto: "No es correcto. Los incendios eléctricos son de clase C. Nunca uses agua, ya que es conductora y puede causar electrocución. Usa un extintor de CO2 o polvo químico seco para apagar el fuego de manera segura."
+      },
+      {
+        pregunta: "Auto incendiado.",
+        imagen: "auto_incendiado.png",
+        correcto: "Clase B",
+        feedback: "¡Correcto! Los vehículos suelen contener líquidos inflamables como gasolina, que son de clase B. Usa un extintor de espuma o polvo químico seco para apagar el fuego y evitar que se propague.",
+        incorrecto: "No es correcto. Los incendios en vehículos son de clase B debido a los líquidos inflamables como gasolina. Usa un extintor de espuma o polvo químico seco para sofocar el fuego de manera efectiva."
+      },
+      {
+        pregunta: "Fuego en biblioteca escolar.",
+        imagen: "escuela_biblioteca.png",
+        correcto: "Clase A",
+        feedback: "¡Correcto! Los libros y muebles de madera son materiales sólidos de clase A. Usa un extintor de agua o espuma para apagar este tipo de fuego, ya que enfrían el material y eliminan el oxígeno.",
+        incorrecto: "No es correcto. Los materiales sólidos como libros y madera pertenecen a la clase A. Usa un extintor de agua o espuma para apagar el fuego de manera eficiente."
+      },
+      {
+        pregunta: "Fuego en depósito de pintura.",
+        imagen: "almacen_pinturas.png",
+        correcto: "Clase B",
+        feedback: "¡Correcto! Las pinturas y solventes son líquidos inflamables de clase B. Usa un extintor de espuma o polvo químico seco para sofocar el fuego y evitar que se expanda.",
+        incorrecto: "No es correcto. Las pinturas y solventes son líquidos inflamables de clase B. Nunca uses agua, ya que puede expandir el fuego. Usa un extintor de espuma o polvo químico seco para apagarlo."
+      },
+      {
+        pregunta: "Incendio en cocina de restaurante.",
+        imagen: "cocina_restaurante.png",
+        correcto: "Clase B",
+        feedback: "¡Correcto! Los aceites y grasas en la cocina son de clase B. Usa un extintor de espuma o polvo químico seco para apagar el fuego sin expandirlo. Recuerda que el agua puede empeorar este tipo de incendio.",
+        incorrecto: "No es correcto. Los incendios en cocinas suelen ser de clase B debido a los aceites y grasas. Nunca uses agua, ya que puede empeorar el incendio. Usa un extintor de espuma o polvo químico seco."
+      },
+      {
+        pregunta: "Maquinaria eléctrica en taller.",
+        imagen: "taller_maquinaria.png",
+        correcto: "Clase C",
+        feedback: "¡Correcto! Los incendios en equipos eléctricos son de clase C. Usa un extintor de CO2 o polvo químico seco, ya que no conducen electricidad y son seguros para este tipo de fuego.",
+        incorrecto: "No es correcto. Los incendios en equipos eléctricos son de clase C. Nunca uses agua, ya que puede causar electrocución. Usa un extintor de CO2 o polvo químico seco para apagar el fuego."
+      },
+      {
+        pregunta: "Sala de servidores con fuego.",
+        imagen: "sala_servidores.png",
+        correcto: "Clase C",
+        feedback: "¡Correcto! Los equipos informáticos en llamas son de clase C. Usa un extintor de CO2 para evitar daños adicionales y apagar el fuego de manera segura.",
+        incorrecto: "No es correcto. Los incendios en equipos informáticos son de clase C. Usa un extintor de CO2 para apagar el fuego sin causar daños adicionales."
+      }
+    ];
+    
+    let usuario = "";
+    let aciertos = 0;
+    let ronda = 0;
+    let preguntas = [];
+    let fireSprite;
+
+    const bgMusic = document.getElementById("bgMusic");
+    bgMusic.volume = 0.15;
+
+    document.getElementById("volumeSlider").addEventListener("input", e => {
+      bgMusic.volume = e.target.value;
+    });
+
+    function toggleMute() {
+      bgMusic.muted = !bgMusic.muted;
+    }
+
+    function iniciarSimulador() {
+      usuario = document.getElementById("nombreUsuario").value || "Usuario";
+      document.getElementById("startScreen").classList.remove("active");
+      document.getElementById("overlay").classList.add("active");
+      preguntas = escenas.sort(() => Math.random() - 0.5).slice(0, 5);
+      cargarEscenario();
+    }
+
+
+    function speak(texto, callback) {
+      const globo = document.getElementById("globo");
+      globo.innerText = texto;
+      globo.style.display = "block";
+
+      const msg = new SpeechSynthesisUtterance(texto);
+      msg.lang = 'es-ES';
+      msg.rate = 0.85;
+
+      msg.onend = () => {
+        globo.style.display = "none";
+        if (callback) callback();
+      };
+
+      speechSynthesis.cancel();
+      speechSynthesis.speak(msg);
+    }
+
+
+    function cargarEscenario() {
+      const esc = preguntas[ronda];
+      document.getElementById("pregunta").innerText = esc.pregunta;
+      document.getElementById("escena-img").src = esc.imagen;
+      if (fireSprite) fireSprite.visible = true;
+      speak(`${usuario}, ${esc.pregunta}`);
+
+      document.querySelectorAll('.botones button').forEach(btn => btn.disabled = false);
+    }
+
+    function responder(tipo) {
+
+      document.querySelectorAll('.botones button').forEach(btn => btn.disabled = true);
+
+      const esc = preguntas[ronda];
+      const texto = tipo === esc.correcto ? esc.feedback : esc.incorrecto;
+
+      if (tipo === esc.correcto) {
+        aciertos++;
+      }
+
+      document.getElementById("puntaje").innerText = `Puntaje: ${aciertos * 10} puntos`;
+
+      speak(texto, () => {
+        setTimeout(siguiente, 800);
+      });
+    }
+
+
+    function siguiente() {
+      ronda++;
+      if (ronda >= preguntas.length) {
+        mostrarResultado();
+      } else {
+        cargarEscenario();
+      }
+    }
+
+    function mostrarResultado() {
+      let insignia = "🥉 Aprendiz Nivel 1";
+      if (aciertos >= 4) insignia = "🥈 Asistente de Emergencias";
+      if (aciertos === 5) insignia = "🥇 Bombero Junior";
+
+      document.getElementById("overlay").classList.remove("active");
+      document.getElementById("finalScreen").classList.add("active");
+
+      document.getElementById("insigniaFinal").innerText = `Insignia: ${insignia}`;
+      document.getElementById("fraseFinal").innerText = `¡Muy bien ${usuario}!`;
+      document.getElementById("nombreFinal").innerText = `Acertaste ${aciertos} de ${preguntas.length}`;
+      speak(`Simulación finalizada. Tu resultado: ${insignia}`);
+    }
+
+
+    function compartirWhatsApp() {
+      const mensaje = `¡Hola! Completé el simulador Simulador Educativo de Extintores 🚒🔥 y gané una insignia 🥇. Probalo vos también en https://www.maxiseguridad.com`;
+      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
+      window.open(url, '_blank');
+    }
+    function descargarImagen() {
+      html2canvas(document.getElementById("tarjetaFinal")).then(canvas => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = "tarjeta_con_fuego_aprendo.png";
+        link.click();
+      });
+    }
+    document.getElementById("volumeSlider").addEventListener("input", function () {
+      bgMusic.volume = this.value;
+    });
+    document.getElementById("bgMusic").volume = 0.05;
+    document.getElementById("bgMusic").play();
+    document.getElementById("bgMusic").loop = true;
+    document.getElementById("bgMusic").muted = false;
+    document.getElementById("bgMusic").addEventListener("ended", function () {
+      this.currentTime = 0;
+      this.play();
+    });
+    document.getElementById("bgMusic").addEventListener("play", function () {
+      this.muted = false;
+    });
+    document.getElementById("bgMusic").addEventListener("pause", function () {
+      this.muted = true;
+    });
+    document.getElementById("bgMusic").addEventListener("volumechange", function () {
+      this.muted = this.volume === 0;
+    });
+    document.getElementById("bgMusic").addEventListener("click", function () {
+      this.muted = !this.muted;
+    });
+
+    // THREE.js
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const light = new THREE.PointLight(0xffffff, 2);
+    light.position.set(5, 5, 5);
+    scene.add(light);
+
+    const loader = new THREE.GLTFLoader();
+    loader.load("extintor.glb", gltf => {
+      const model = gltf.scene;
+      model.position.set(-1.5, -1, 0);
+      model.scale.set(2, 2, 2);
+      scene.add(model);
+    });
+
+    const fireTexture = new THREE.TextureLoader().load("fuego-sprite.png");
+    fireTexture.wrapS = fireTexture.wrapT = THREE.RepeatWrapping;
+    const tiles = 5;
+    fireTexture.repeat.set(1 / tiles, 1 / tiles);
+
+    const fireMat = new THREE.SpriteMaterial({ map: fireTexture, transparent: true });
+    fireSprite = new THREE.Sprite(fireMat);
+    fireSprite.scale.set(2, 2, 1);
+    fireSprite.position.set(1.5, 0, 0);
+    scene.add(fireSprite);
+
+    const clock = new THREE.Clock();
+    let tile = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = clock.getDelta() * 1000;
+      if (delta > 100) {
+        tile = (tile + 1) % 25;
+        fireTexture.offset.x = (tile % tiles) / tiles;
+        fireTexture.offset.y = Math.floor(tile / tiles) / tiles;
+      }
+      renderer.render(scene, camera);
+    }
+
+    camera.position.z = 5;
+    animate();
+  </script>
+</body>
+
+</html>

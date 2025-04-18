@@ -8,235 +8,245 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     :root {
-      --rojo: #e30613;
-      --blanco: #ffffff;
-      --gris: #f4f4f4;
-      --negro: #1a1a1a;
-      --verde-wsp: #25D366;
-    }
-  
-    * {
-      box-sizing: border-box;
-    }
-  
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, var(--gris), var(--blanco));
-      color: var(--negro);
-      height: 100%;
-    }
-  
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-  
-    #app {
-      width: 100%;
-      max-width: 600px;
-      background: var(--blanco);
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    #startScreen,
-    #overlay,
-    #finalScreen {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 0.8s ease;
-      width: 100%;
-    }
-  
-    #startScreen.active,
-    #overlay.active,
-    #finalScreen.active {
-      display: flex;
-      opacity: 1;
-    }
-  
-    input {
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-top: 10px;
-      width: 100%;
-    }
-  
-    button {
-      background: var(--rojo);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 24px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 15px;
-      transition: 0.2s;
-    }
-  
-    button:hover {
-      background: #b00410;
-    }
-  
-    #overlay img {
-      width: 100%;
-      max-height: 200px;
-      object-fit: contain;
-      border-radius: 12px;
-      margin-bottom: 16px;
-    }
-  
-    .botones {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-    }
-  
-    #guide {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      width: 80px;
-    }
-  
-    #globo {
-      position: absolute;
-      bottom: 100px;
-      left: 100px;
-      background: var(--blanco);
-      padding: 12px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      max-width: 240px;
-      display: none;
-    }
-  
-    #volumeControl {
-      position: fixed;
-      right: 10px;
-      bottom: 10px;
-      background: var(--blanco);
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      z-index: 999;
-    }
-  
-    #tarjetaFinal {
-      background: linear-gradient(135deg, #ffffff, #f1f1f1);
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      margin: 20px 0;
-      width: 100%;
-      animation: fadeIn 1s ease forwards;
-    }
-  
-    #insigniaFinal {
-      font-size: 2rem;
-      animation: bounce 1s infinite alternate;
-    }
-  
-    #logoFinal {
-      width: 100px;
-      margin-bottom: 10px;
-    }
-  
-    #compartirBtns {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    #compartirBtns button {
-      background-color: var(--verde-wsp);
-      border: none;
-      color: white;
-      padding: 10px 16px;
-      font-size: 15px;
-      margin: 5px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-    }
-  
-    #compartirBtns img {
-      width: 20px;
-      height: 20px;
-    }
-  
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-  
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  
-    @keyframes bounce {
-      from {
-        transform: translateY(0);
-      }
-  
-      to {
-        transform: translateY(-8px);
-      }
-    }
-  
-    @media screen and (max-width: 480px) {
-      #app {
-        padding: 16px;
-        border-radius: 12px;
-        box-shadow: none;
-      }
-  
-      #guide {
-        width: 70px;
-      }
-  
-      #globo {
-        bottom: 120px;
-        left: 20px;
-        max-width: 80vw;
-      }
-  
-      .botones button {
-        font-size: 14px;
-        padding: 10px;
-      }
-  
-      #volumeControl {
-        bottom: 10px;
-        right: 10px;
-        transform: scale(0.9);
-      }
-    }
+  --rojo: #e30613;
+  --blanco: #ffffff;
+  --gris: #f4f4f4;
+  --negro: #1a1a1a;
+  --verde-wsp: #25D366;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, var(--gris), var(--blanco));
+  color: var(--negro);
+  height: 100%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#app {
+  width: 100%;
+  max-width: 600px;
+  background: var(--blanco);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 100px; /* deja lugar a la guía */
+}
+
+#startScreen,
+#overlay,
+#finalScreen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  width: 100%;
+}
+
+#startScreen.active,
+#overlay.active,
+#finalScreen.active {
+  display: flex;
+  opacity: 1;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+button {
+  background: var(--rojo);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #b00410;
+}
+
+#overlay img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.botones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+/* ✅ SURICATA SIEMPRE VISIBLE */
+#guide {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 90px;
+  z-index: 1000;
+}
+
+/* ✅ GLOBO FIJO Y RESPONSIVE */
+#globo {
+  position: fixed;
+  bottom: 120px;
+  left: 120px;
+  background: var(--blanco);
+  padding: 14px;
+  font-size: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 260px;
+  display: none;
+  z-index: 1001;
+}
+
+#volumeControl {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  background: var(--blanco);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 999;
+}
+
+#tarjetaFinal {
+  background: linear-gradient(135deg, #ffffff, #f1f1f1);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  width: 100%;
+  animation: fadeIn 1s ease forwards;
+}
+
+#insigniaFinal {
+  font-size: 2rem;
+  animation: bounce 1s infinite alternate;
+}
+
+#logoFinal {
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+#compartirBtns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#compartirBtns button {
+  background-color: var(--verde-wsp);
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  font-size: 15px;
+  margin: 5px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+#compartirBtns img {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-8px);
+  }
+}
+
+/* ✅ RESPONSIVE EN MOBILE */
+@media screen and (max-width: 480px) {
+  #app {
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: none;
+    margin-bottom: 120px; /* más espacio para guía */
+  }
+
+  #guide {
+    width: 70px;
+    left: 12px;
+    bottom: 10px;
+  }
+
+  #globo {
+    bottom: 100px;
+    left: 20px;
+    font-size: 14px;
+    max-width: 85vw;
+  }
+
+  .botones button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  #volumeControl {
+    bottom: 8px;
+    right: 8px;
+    transform: scale(0.9);
+  }
+}
+
   </style>
 </head>
 

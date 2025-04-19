@@ -559,10 +559,11 @@
 
 
     function compartirWhatsApp() {
-      const mensaje = `¡Hola! Completé el simulador Simulador Educativo de Extintores 🚒🔥 y gané una insignia 🥇. Probalo vos también en https://www.maxiseguridad.com`;
+      const mensaje = `¡Hola! Completé el simulador Simulador Educativo de Extintores 🚒🔥 y gané una insignia 🥇. Probalo vos también en https://fgarcia93mdz.github.io/con_fuego_aprendo/`;
       const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
       window.open(url, '_blank');
     }
+    
     function descargarImagen() {
       html2canvas(document.getElementById("tarjetaFinal")).then(canvas => {
         const link = document.createElement("a");

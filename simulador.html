@@ -118,17 +118,20 @@
 
     #guide {
       position: fixed;
-      bottom: 20px;
-      left: 20px;
+      bottom: 450px;
+      left: 280px;
       width: 90px;
       z-index: 1000;
     }
 
     #globo {
       position: fixed;
-      bottom: 120px;
-      left: 120px;
-      background: var(--blanco);
+      bottom: 580px;
+      left: 350px;
+      background: #ea3541;
+      color: white;
+      font-weight: bold;
+      text-align: center;
       padding: 14px;
       font-size: 15px;
       border-radius: 12px;
@@ -136,6 +139,16 @@
       max-width: 260px;
       display: none;
       z-index: 1001;
+    }
+
+    #globo::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      border-width: 10px 100px 0 0;
+      border-style: solid;
+      border-color: #ea3541 transparent transparent transparent;
     }
 
     #volumeControl {
@@ -219,6 +232,17 @@
       }
     }
 
+    .correcta {
+      background-color: #28a745 !important;
+      color: white !important;
+    }
+
+    .incorrecta {
+      background-color: #ccc !important;
+      color: #666 !important;
+    }
+
+
     @media screen and (max-width: 480px) {
       #app {
         padding: 16px;
@@ -238,6 +262,10 @@
         left: 80px;
         font-size: 14px;
         max-width: 80vw;
+      }
+
+      #globo::after {
+        left: 20px;
       }
 
       .botones button {
@@ -306,68 +334,68 @@
       {
         pregunta: "Una papelera se incendia en la oficina.",
         imagen: "oficina_papelera.png",
-        correcto: "Clase A",
+        correcto: "A",
         feedback: "¡Correcto! El papel es un material de clase A, que incluye madera, cartón y otros sólidos inflamables. Estos materiales se apagan mejor con extintores de agua o espuma, ya que enfrían el fuego y eliminan el oxígeno.",
         incorrecto: "No es correcto. El papel pertenece a la clase A, que incluye materiales sólidos como madera y cartón. Usar agua o espuma es ideal porque enfrían el fuego y evitan que se propague."
       },
       {
         pregunta: "Una sartén con aceite se prende fuego.",
         imagen: "cocina_aceite.png",
-        correcto: "Clase B",
+        correcto: "B",
         feedback: "¡Bien hecho! Los líquidos inflamables como aceites y grasas son de clase B. Usa un extintor de espuma o polvo químico seco para sofocar el fuego sin expandirlo. Nunca uses agua, ya que puede hacer que el aceite salpique y empeore el incendio.",
         incorrecto: "No es correcto. Los líquidos inflamables como aceites son de clase B. Usar agua puede hacer que el aceite salpique y empeore el incendio. Usa un extintor de espuma o polvo químico seco para sofocar el fuego de manera segura."
       },
       {
         pregunta: "Tablero eléctrico chispea.",
         imagen: "tablero_electrico.png",
-        correcto: "Clase C",
+        correcto: "C",
         feedback: "¡Correcto! Los incendios eléctricos son de clase C. Usa un extintor de dióxido de carbono (CO2) o polvo químico seco, ya que no conducen electricidad y apagan el fuego sin dañar los equipos.",
         incorrecto: "No es correcto. Los incendios eléctricos son de clase C. Nunca uses agua, ya que es conductora y puede causar electrocución. Usa un extintor de CO2 o polvo químico seco para apagar el fuego de manera segura."
       },
       {
         pregunta: "Auto incendiado.",
         imagen: "auto_incendiado.png",
-        correcto: "Clase B",
+        correcto: "B",
         feedback: "¡Correcto! Los vehículos suelen contener líquidos inflamables como gasolina, que son de clase B. Usa un extintor de espuma o polvo químico seco para apagar el fuego y evitar que se propague.",
         incorrecto: "No es correcto. Los incendios en vehículos son de clase B debido a los líquidos inflamables como gasolina. Usa un extintor de espuma o polvo químico seco para sofocar el fuego de manera efectiva."
       },
       {
         pregunta: "Fuego en biblioteca escolar.",
         imagen: "escuela_biblioteca.png",
-        correcto: "Clase A",
+        correcto: "A",
         feedback: "¡Correcto! Los libros y muebles de madera son materiales sólidos de clase A. Usa un extintor de agua o espuma para apagar este tipo de fuego, ya que enfrían el material y eliminan el oxígeno.",
         incorrecto: "No es correcto. Los materiales sólidos como libros y madera pertenecen a la clase A. Usa un extintor de agua o espuma para apagar el fuego de manera eficiente."
       },
       {
         pregunta: "Fuego en depósito de pintura.",
         imagen: "almacen_pinturas.png",
-        correcto: "Clase B",
+        correcto: "B",
         feedback: "¡Correcto! Las pinturas y solventes son líquidos inflamables de clase B. Usa un extintor de espuma o polvo químico seco para sofocar el fuego y evitar que se expanda.",
         incorrecto: "No es correcto. Las pinturas y solventes son líquidos inflamables de clase B. Nunca uses agua, ya que puede expandir el fuego. Usa un extintor de espuma o polvo químico seco para apagarlo."
       },
       {
         pregunta: "Incendio en cocina de restaurante.",
         imagen: "cocina_restaurante.png",
-        correcto: "Clase B",
+        correcto: "B",
         feedback: "¡Correcto! Los aceites y grasas en la cocina son de clase B. Usa un extintor de espuma o polvo químico seco para apagar el fuego sin expandirlo. Recuerda que el agua puede empeorar este tipo de incendio.",
         incorrecto: "No es correcto. Los incendios en cocinas suelen ser de clase B debido a los aceites y grasas. Nunca uses agua, ya que puede empeorar el incendio. Usa un extintor de espuma o polvo químico seco."
       },
       {
         pregunta: "Maquinaria eléctrica en taller.",
         imagen: "taller_maquinaria.png",
-        correcto: "Clase C",
+        correcto: "C",
         feedback: "¡Correcto! Los incendios en equipos eléctricos son de clase C. Usa un extintor de CO2 o polvo químico seco, ya que no conducen electricidad y son seguros para este tipo de fuego.",
         incorrecto: "No es correcto. Los incendios en equipos eléctricos son de clase C. Nunca uses agua, ya que puede causar electrocución. Usa un extintor de CO2 o polvo químico seco para apagar el fuego."
       },
       {
         pregunta: "Sala de servidores con fuego.",
         imagen: "sala_servidores.png",
-        correcto: "Clase C",
+        correcto: "C",
         feedback: "¡Correcto! Los equipos informáticos en llamas son de clase C. Usa un extintor de CO2 para evitar daños adicionales y apagar el fuego de manera segura.",
         incorrecto: "No es correcto. Los incendios en equipos informáticos son de clase C. Usa un extintor de CO2 para apagar el fuego sin causar daños adicionales."
       }
     ];
-    
+
     let usuario = "";
     let aciertos = 0;
     let ronda = 0;
@@ -375,7 +403,7 @@
     let fireSprite;
 
     const bgMusic = document.getElementById("bgMusic");
-    bgMusic.volume = 0.15;
+    bgMusic.volume = 0.05;
 
     document.getElementById("volumeSlider").addEventListener("input", e => {
       bgMusic.volume = e.target.value;
@@ -424,12 +452,24 @@
     }
 
     function responder(tipo) {
-
-      document.querySelectorAll('.botones button').forEach(btn => btn.disabled = true);
-
       const esc = preguntas[ronda];
-      const texto = tipo === esc.correcto ? esc.feedback : esc.incorrecto;
+      const botones = document.querySelectorAll('.botones button');
 
+      botones.forEach(btn => {
+        btn.disabled = true;
+
+        const valorBtn = btn.innerText.includes("A") ? "A" :
+          btn.innerText.includes("B") ? "B" :
+            "C";
+
+        if (valorBtn === esc.correcto) {
+          btn.classList.add("correcta");
+        } else {
+          btn.classList.add("incorrecta");
+        }
+      });
+
+      const texto = tipo === esc.correcto ? esc.feedback : esc.incorrecto;
       if (tipo === esc.correcto) {
         aciertos++;
       }
@@ -437,7 +477,12 @@
       document.getElementById("puntaje").innerText = `Puntaje: ${aciertos * 10} puntos`;
 
       speak(texto, () => {
-        setTimeout(siguiente, 800);
+        setTimeout(() => {
+          botones.forEach(btn => {
+            btn.classList.remove("correcta", "incorrecta");
+          });
+          siguiente();
+        }, 1200);
       });
     }
 

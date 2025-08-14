@@ -337,6 +337,9 @@
           Compartir por WhatsApp
         </button>
       </div>
+      <button onclick="siguienteSimulador()" style="background: #28a745; margin-top: 10px;">
+        Siguiente
+      </button>
       <button onclick="location.reload()">Volver a empezar</button>
     </div>
   </div>
@@ -542,6 +545,12 @@
       const mensaje = `¡Hola! Completé el simulador Simulador Educativo de Extintores 🚒🔥 y gané una insignia 🥇. Probalo vos también en https://fgarcia93mdz.github.io/con_fuego_aprendo/`;
       const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
       window.open(url, '_blank');
+    }
+    
+    function siguienteSimulador() {
+      // Reiniciar el simulador con nuevas escenas o redirigir a otra página
+      alert("¡Genial! Reiniciando el simulador con nuevos desafíos...");
+      location.reload();
     }
     
     function descargarImagen() {

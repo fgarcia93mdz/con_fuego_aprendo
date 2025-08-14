@@ -56,7 +56,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 100px;
+      margin: 20px;
+      min-height: 80vh;
     }
 
     #startScreen,
@@ -79,12 +80,13 @@
     }
 
     input {
-      padding: 10px;
+      padding: 12px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 6px;
       margin-top: 10px;
-      width: 40%;
+      width: 80%;
+      max-width: 300px;
     }
 
     button {
@@ -105,7 +107,8 @@
 
     #overlay img {
       width: 100%;
-      max-height: 200px;
+      max-width: 400px;
+      max-height: 250px;
       object-fit: contain;
       border-radius: 12px;
       margin-bottom: 16px;
@@ -113,8 +116,8 @@
 
     #guide {
       position: fixed;
-      bottom: 450px;
-      left: 280px;
+      bottom: 120px;
+      left: 50px;
       width: 90px;
       z-index: 1000;
       display: block;
@@ -124,17 +127,17 @@
 
     #globo {
       position: fixed;
-      bottom: 580px;
-      left: 350px;
+      bottom: 220px;
+      left: 120px;
       background: #fffbe6;
       color: #222;
       font-weight: bold;
       text-align: center;
       padding: 16px 20px;
-      font-size: 1.2em;
+      font-size: 1.1em;
       border-radius: 14px;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-      max-width: 300px;
+      max-width: 280px;
       display: none;
       z-index: 1001;
       border: 2px solid #e30613;
@@ -224,57 +227,78 @@
 
 
     @media screen and (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      
       #app {
-        padding: 16px;
+        padding: 15px;
         border-radius: 12px;
-        box-shadow: none;
-        margin-bottom: 120px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        margin: 10px;
+        min-height: 85vh;
       }
 
-      .guide-wrapper {
-        bottom: 60px;
-        left: 20px;
-        width: 70px;
-        height: 80px;
+      input {
+        width: 90%;
+        font-size: 16px;
+        padding: 12px;
       }
 
-      .guide-wrapper::after {
-        width: 90px;
-        height: 20px;
-        left: 50%;
-        background: rgba(227, 6, 21, 0.6);
-        box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+      button {
+        font-size: 16px;
+        padding: 14px 20px;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      #overlay img {
+        max-width: 100%;
+        max-height: 200px;
+      }
+
+      #overlay h2 {
+        font-size: 1.2em;
+        margin: 10px 0;
+      }
+
+      .botones {
+        gap: 12px;
+        margin-top: 15px;
+      }
+
+      .botones button {
+        font-size: 16px;
+        padding: 14px;
+        margin-bottom: 0;
       }
 
       #guide {
-        width: 70px;
-        left: 10px;
-        bottom: 10px;
-        animation: bounceGuide 1.2s infinite alternate;
+        position: fixed;
+        width: 60px;
+        left: 15px;
+        bottom: 15px;
+        z-index: 1000;
       }
 
       #globo {
-        bottom: 100px;
-        left: 20px;
-        font-size: 16px;
-        max-width: 90vw;
+        position: fixed;
+        bottom: 85px;
+        left: 15px;
+        font-size: 14px;
+        max-width: 85vw;
+        padding: 12px 16px;
         border-width: 2px;
       }
 
       #globo::after {
-        left: 20px;
-      }
-
-      .botones button {
-        font-size: 18px;
-        padding: 16px;
-        margin-bottom: 8px;
+        left: 15px;
       }
 
       #volumeControl {
         bottom: 8px;
         right: 8px;
-        transform: scale(0.9);
+        transform: scale(0.8);
       }
     }
   </style>

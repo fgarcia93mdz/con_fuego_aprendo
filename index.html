@@ -28,7 +28,10 @@
       background: var(--gris);
       color: var(--negro);
       overflow-x: hidden;
-      font-size: 1.4vw; /* Más equilibrado para TV */
+      font-size: 1.1vw;
+      background: var(--blanco);
+
+      /* Más pequeño para TV */
     }
 
     header {
@@ -39,6 +42,7 @@
       position: relative;
       font-size: 1vw;
     }
+
     /* QR fijo a la derecha */
     #qr-container {
       position: fixed;
@@ -46,13 +50,14 @@
       bottom: 2vw;
       background: var(--blanco);
       border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
       padding: 0.8vw;
       z-index: 100;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
+
     #qr-container img {
       width: 8vw;
       min-width: 100px;
@@ -68,32 +73,39 @@
 
     #guide {
       position: absolute;
-      bottom: 10px;
+      bottom: -150px;
       left: 2vw;
       width: 90px;
       z-index: 10;
       transition: transform 0.4s;
       will-change: transform;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
       animation: bounceGuide 1.2s infinite alternate;
     }
+
     @keyframes bounceGuide {
-      from { transform: translateY(0); }
-      to { transform: translateY(-18px); }
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-18px);
+      }
     }
 
     #globo {
       position: absolute;
-      bottom: 160px;
-      left: 90px;
+      bottom: 10px;
+      left: 120px;
       background: #fffbe6;
       color: #222;
       padding: 10px 16px;
       border-radius: 14px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-      max-width: 260px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      max-width: 360px;
       display: none;
-      font-size: 1em;
+      font-size: 1.2em;
+      /* Más grande para TV */
       z-index: 20;
       border: 2px solid #e30613;
       animation: fadeInGlobo 0.5s;
@@ -108,9 +120,17 @@
       border-style: solid;
       border-color: #fffbe6 transparent transparent transparent;
     }
+
     @keyframes fadeInGlobo {
-      from { opacity: 0; transform: scale(0.8); }
-      to { opacity: 1; transform: scale(1); }
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
 
@@ -118,7 +138,7 @@
       overflow: hidden;
       max-width: 100%;
       margin: 2rem auto;
-    /* Eliminar color blanco para heredar negro */
+      /* Eliminar color blanco para heredar negro */
     }
 
     .cards-wrapper {
@@ -144,7 +164,7 @@
       max-height: 340px;
       border-radius: 14px;
       margin-bottom: 1.5rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10);
       display: block;
       margin-left: auto;
       margin-right: auto;
@@ -161,7 +181,7 @@
       justify-content: center;
       gap: 1rem;
       margin: 1.5rem auto;
-    color: var(--negro);
+      color: var(--negro);
     }
 
     .arrow {
@@ -208,137 +228,161 @@
 
     @media screen and (max-width: 600px) {
       body {
-        font-size: 3.5vw;
+        font-size: 16px;
+        /* Tamaño fijo para móvil */
       }
+
       header {
-        font-size: 1.5vw;
-        padding: 3vw 2vw 3vw;
+        font-size: 14px;
+        padding: 15px 10px;
       }
+
       #guide {
-        width: 50px;
+        width: 70px;
         left: 8px;
         bottom: 8px;
       }
+
       #globo {
         bottom: 60px;
         left: 70px;
-        font-size: 1vw;
-        max-width: 80vw;
+        font-size: 14px;
+        /* Tamaño fijo legible */
+        max-width: 100vw;
         border-width: 2px;
+        padding: 8px 12px;
       }
+
       #globo::after {
         left: 10px;
       }
+
+      .card {
+        margin: 0 10px;
+        /* Márgenes para no pegar a los bordes */
+        padding: 15px;
+      }
+
       .card img {
-        max-width: 180vw;
+        max-width: 85vw;
+        /* Corregir el ancho excesivo */
         max-height: 200px;
       }
+
       #qr-container {
         position: fixed;
-        right: 2vw;
-        bottom: 2vw;
+        right: 10px;
+        bottom: 10px;
         width: auto;
         flex-direction: column;
         justify-content: flex-end;
-        padding: 1vw;
+        padding: 8px;
       }
+
       #qr-container img {
-        width: 22vw;
+        width: 80px;
+        /* Tamaño fijo para móvil */
         min-width: 70px;
         max-width: 100px;
+      }
+
+      .slider-container {
+        margin: 10px;
       }
     }
   </style>
 </head>
 
 
-  <header>
-    <h1>🔥 Simulador Educativo de Extintores</h1>
-    <p>Explorá cada tarjeta para aprender antes de jugar el simulador</p>
-  </header>
-  <div id="main-bg" style="background: var(--blanco); min-height: 100vh; width: 100vw;">
-    <!-- QR abajo a la derecha -->
-    <div id="qr-container">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://fgarcia93mdz.github.io/con_fuego_aprendo/" alt="Escanea para jugar en tu celular">
-    </div>
-    <div class="slider-container">
-      <div class="cards-wrapper" id="slider">
-        <img id="guide" src="guide.png" alt="Guía">
-        <div id="globo"></div>
-        <!-- Cómo usar un extintor -->
-        <div class="card"
-          onclick="hablar('Recordá el método PASS para usar un extintor. P: Pararse a distancia segura. A: Apuntar a la base del fuego. S: Soltar el seguro. S: Sujetar y rociar en barrido.')">
-          <img src="usar_extintor.png" alt="Cómo usar un extintor">
-          <h3>¿Cómo usar un extintor?</h3>
-          <p><strong>Recordá el método PASS:</strong></p>
-          <p>
-            <strong>P</strong> - Pararse a distancia segura.<br>
-            <strong>A</strong> - Apuntar a la base del fuego.<br>
-            <strong>S</strong> - Soltar el seguro.<br>
-            <strong>S</strong> - Sujetar y rociar con movimientos de barrido.
-          </p>
-        </div>
-        <!-- Cómo identificar el tipo de fuego -->
-        <div class="card"
-          onclick="hablar('Observá qué se está quemando. Si es papel o madera, es clase A. Si es aceite o pintura, es clase B. Si es un equipo eléctrico, es clase C.')">
-          <img src="tipos_fuego.png" alt="Identificar clase de fuego">
-          <h3>¿Cómo identificar el tipo de fuego?</h3>
-          <p><strong>¿Qué material se quema?</strong></p>
-          <p>
-            🔹 <strong>Clase A:</strong> papel, cartón, madera o telas.<br>
-            🔹 <strong>Clase B:</strong> aceites, pinturas o combustibles líquidos.<br>
-            🔹 <strong>Clase C:</strong> equipos eléctricos, tableros o enchufes.
-          </p>
-        </div>
-        <!-- Clase A -->
-        <div class="card" onclick="hablar('Clase A. Papel, cartón, madera y tela. Se apagan con agua o espuma.')">
-          <img src="oficina_papelera.png" alt="Clase A">
-          <h3>Clase A - Materiales sólidos</h3>
-          <p>Incluyen papel, cartón, madera y telas.</p>
-          <p>Se apagan con <strong>agua</strong> o <strong>espuma</strong>, que enfrían el fuego y cortan el oxígeno.</p>
-        </div>
-        <!-- Clase B -->
-        <div class="card" onclick="hablar('Clase B. Aceites, pinturas, combustibles. Nunca uses agua.')">
-          <img src="cocina_aceite.png" alt="Clase B">
-          <h3>Clase B - Líquidos inflamables</h3>
-          <p>Aceites, pinturas, solventes y combustibles.</p>
-          <p>Usá <strong>espuma</strong> o <strong>polvo químico seco</strong>. <u>No uses agua</u>.</p>
-        </div>
-        <!-- Clase C -->
-        <div class="card" onclick="hablar('Clase C. Incendios eléctricos. Usá CO2 o polvo seco.')">
-          <img src="tablero_electrico.png" alt="Clase C">
-          <h3>Clase C - Equipos eléctricos</h3>
-          <p>Tableros, servidores, computadoras y cableado eléctrico.</p>
-          <p>Usá <strong>CO₂</strong> o <strong>polvo seco</strong>, que no conducen electricidad.</p>
-        </div>
-        <!-- Vehículos -->
-        <div class="card" onclick="hablar('Incendios en vehículos. Usá extintores clase B.')">
-          <img src="auto_incendiado.png" alt="Vehículos">
-          <h3>Incendio en vehículos</h3>
-          <p>Fuego en motor o tanque por líquidos inflamables.</p>
-          <p>Usá extintores de <strong>clase B</strong>.<br>
-            Evitá abrir el capó bruscamente.</p>
-        </div>
-        <!-- Biblioteca / Escuela -->
-        <div class="card" onclick="hablar('Incendio en biblioteca. Libros y madera. Clase A.')">
-          <img src="escuela_biblioteca.png" alt="Biblioteca">
-          <h3>Escuela o Biblioteca</h3>
-          <p>Ambientes con papel, libros o muebles de madera.</p>
-          <p>Se apagan con <strong>agua</strong> o <strong>espuma</strong>.<br>
-            Evacuá si hay mucho humo.</p>
-        </div>
+<header>
+  <h1>🔥 Simulador Educativo de Extintores</h1>
+  <p>Explorá cada tarjeta para aprender antes de jugar el simulador</p>
+</header>
+<div id="main-bg" style="background: var(--blanco); min-height: 100vh; width: 100vw;">
+  <!-- QR abajo a la derecha -->
+  <div id="qr-container">
+    <img
+      src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://fgarcia93mdz.github.io/con_fuego_aprendo/"
+      alt="Escanea para jugar en tu celular">
+  </div>
+  <div class="slider-container">
+    <div class="cards-wrapper" id="slider">
+      <!-- Cómo usar un extintor -->
+      <div class="card"
+        onclick="hablar('Recordá el método PASS para usar un extintor. P: Pararse a distancia segura. A: Apuntar a la base del fuego. S: Soltar el seguro. S: Sujetar y rociar en barrido.')">
+        <img src="usar_extintor.png" alt="Cómo usar un extintor">
+        <h3>¿Cómo usar un extintor?</h3>
+        <p><strong>Recordá el método PASS:</strong></p>
+        <p>
+          <strong>P</strong> - Pararse a distancia segura.<br>
+          <strong>A</strong> - Apuntar a la base del fuego.<br>
+          <strong>S</strong> - Soltar el seguro.<br>
+          <strong>S</strong> - Sujetar y rociar con movimientos de barrido.
+        </p>
       </div>
-    </div>
-    <div class="slider-container">
-      <div class="slider-nav">
-        <button class="arrow" onclick="mover(-1)"><i class="fas fa-chevron-left"></i></button>
-        <button class="arrow" onclick="mover(1)"><i class="fas fa-chevron-right"></i></button>
+      <!-- Cómo identificar el tipo de fuego -->
+      <div class="card"
+        onclick="hablar('Observá qué se está quemando. Si es papel o madera, es clase A. Si es aceite o pintura, es clase B. Si es un equipo eléctrico, es clase C.')">
+        <img src="tipos_fuego.png" alt="Identificar clase de fuego">
+        <h3>¿Cómo identificar el tipo de fuego?</h3>
+        <p><strong>¿Qué material se quema?</strong></p>
+        <p>
+          🔹 <strong>Clase A:</strong> papel, cartón, madera o telas.<br>
+          🔹 <strong>Clase B:</strong> aceites, pinturas o combustibles líquidos.<br>
+          🔹 <strong>Clase C:</strong> equipos eléctricos, tableros o enchufes.
+        </p>
       </div>
-      <button class="start-button" onclick="window.location.href='simulador.html'">¡Estoy listo para Jugar!</button>
+      <!-- Clase A -->
+      <div class="card" onclick="hablar('Clase A. Papel, cartón, madera y tela. Se apagan con agua o espuma.')">
+        <img src="oficina_papelera.png" alt="Clase A">
+        <h3>Clase A - Materiales sólidos</h3>
+        <p>Incluyen papel, cartón, madera y telas.</p>
+        <p>Se apagan con <strong>agua</strong> o <strong>espuma</strong>, que enfrían el fuego y cortan el oxígeno.</p>
+      </div>
+      <!-- Clase B -->
+      <div class="card" onclick="hablar('Clase B. Aceites, pinturas, combustibles. Nunca uses agua.')">
+        <img src="cocina_aceite.png" alt="Clase B">
+        <h3>Clase B - Líquidos inflamables</h3>
+        <p>Aceites, pinturas, solventes y combustibles.</p>
+        <p>Usá <strong>espuma</strong> o <strong>polvo químico seco</strong>. <u>No uses agua</u>.</p>
+      </div>
+      <!-- Clase C -->
+      <div class="card" onclick="hablar('Clase C. Incendios eléctricos. Usá CO2 o polvo seco.')">
+        <img src="tablero_electrico.png" alt="Clase C">
+        <h3>Clase C - Equipos eléctricos</h3>
+        <p>Tableros, servidores, computadoras y cableado eléctrico.</p>
+        <p>Usá <strong>CO₂</strong> o <strong>polvo seco</strong>, que no conducen electricidad.</p>
+      </div>
+      <!-- Vehículos -->
+      <div class="card" onclick="hablar('Incendios en vehículos. Usá extintores clase B.')">
+        <img src="auto_incendiado.png" alt="Vehículos">
+        <h3>Incendio en vehículos</h3>
+        <p>Fuego en motor o tanque por líquidos inflamables.</p>
+        <p>Usá extintores de <strong>clase B</strong>.<br>
+          Evitá abrir el capó bruscamente.</p>
+      </div>
+      <!-- Biblioteca / Escuela -->
+      <div class="card" onclick="hablar('Incendio en biblioteca. Libros y madera. Clase A.')">
+        <img src="escuela_biblioteca.png" alt="Biblioteca">
+        <h3>Escuela o Biblioteca</h3>
+        <p>Ambientes con papel, libros o muebles de madera.</p>
+        <p>Se apagan con <strong>agua</strong> o <strong>espuma</strong>.<br>
+          Evacuá si hay mucho humo.</p>
+      </div>
     </div>
   </div>
+  <div class="slider-container">
+    <img id="guide" src="guide.png" alt="Guía">
+    <div id="globo"></div>
+    <div class="slider-nav">
+      <button class="arrow" onclick="mover(-1)"><i class="fas fa-chevron-left"></i></button>
+      <button class="arrow" onclick="mover(1)"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <button class="start-button" onclick="window.location.href='simulador.html'">¡Estoy listo para Jugar!</button>
+  </div>
+</div>
 
-  <!-- Footer 
+<!-- Footer 
   <footer>
     &copy; 2025 Maxiseguridad Industrial &middot; Simulador Educativo de Extintores
   </footer>

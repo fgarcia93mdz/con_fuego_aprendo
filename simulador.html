@@ -350,6 +350,11 @@
     <img id="guide" src="guide.png" alt="Guía">
   </div>
 
+  <!-- Video invisible para evitar bloqueo de pantalla -->
+  <video muted loop style="position: fixed; top: -1px; left: -1px; width: 1px; height: 1px; opacity: 0;" autoplay>
+    <source src="data:video/mp4;base64,AAAAHGZ0eXBpc29tAAACAGlzb21pc28ybXA0MQAAAAhmcmVlAAAAGm1kYXQAAAIzAACBBAAAQBXtAAIAAAAAAAAAiAP2AAQ=" type="video/mp4">
+  </video>
+
   <!-- 
 <div id="volumeControl">
     🔊
@@ -635,6 +640,40 @@
 
     camera.position.z = 5;
     animate();
+
+    // Scripts para evitar que se bloquee la pantalla
+    setInterval(() => {
+      // Simular actividad del usuario cada 30 segundos
+      const event = new MouseEvent('mousemove', {
+        clientX: 1,
+        clientY: 1
+      });
+      document.dispatchEvent(event);
+    }, 30000);
+
+    // Evitar que se duerma la pantalla con Wake Lock API si está disponible
+    if ('wakeLock' in navigator) {
+      let wakeLock = null;
+      
+      const requestWakeLock = async () => {
+        try {
+          wakeLock = await navigator.wakeLock.request('screen');
+          console.log('Wake Lock activado en simulador - la pantalla no se bloqueará');
+        } catch (err) {
+          console.log('No se pudo activar Wake Lock:', err);
+        }
+      };
+
+      // Activar Wake Lock al cargar la página
+      requestWakeLock();
+
+      // Reactivar si se pierde el foco
+      document.addEventListener('visibilitychange', () => {
+        if (wakeLock !== null && document.visibilityState === 'visible') {
+          requestWakeLock();
+        }
+      });
+    }
   </script>
 </body>
 

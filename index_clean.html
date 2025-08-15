@@ -82,33 +82,8 @@
       transition: transform 0.4s;
       will-change: transform;
       filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.2));
-      opacity: 0;
-      transform: scale(0) rotate(0deg);
-    }
-
-    #guide.appear {
-      animation: suricataAppear 1.5s ease-out forwards;
-    }
-
-    #guide.bounce {
       animation: bounceGuide 2s infinite alternate;
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    @keyframes suricataAppear {
-      0% {
-        opacity: 0;
-        transform: scale(0) rotate(360deg);
-      }
-      70% {
-        opacity: 1;
-        transform: scale(1.1) rotate(0deg);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1) rotate(0deg);
-      }
+      margin-bottom: 20px;
     }
 
     @keyframes bounceGuide {
@@ -122,67 +97,43 @@
     }
 
     #globo {
-      position: absolute;
-      top: -110px;
-      left: 220px;
       background: #fffbe6;
       color: #222;
-      padding: 25px 35px;
+      padding: 30px 40px;
       border-radius: 20px;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-      max-width: 800px;
-      min-width: 1100px;
+      max-width: 600px;
       display: block;
-      font-size: 2em;
+      font-size: 2.5em;
       font-weight: bold;
       text-align: center;
       z-index: 20;
       border: 3px solid #e30613;
-      opacity: 0;
-      transform: scale(0.5);
-      transition: all 0.8s ease;
-    }
-
-    #globo.show {
-      opacity: 1;
-      transform: scale(1);
-      animation: fadeInGlobo 0.8s ease-out;
+      animation: fadeInGlobo 1s;
+      margin-bottom: 40px;
+      position: relative;
     }
 
     #globo::after {
       content: "";
       position: absolute;
-      top: 50%;
-      left: -15px;
-      transform: translateY(-50%);
-      border-width: 15px 15px 15px 0;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 15px 15px 0 15px;
       border-style: solid;
-      border-color: transparent #fffbe6 transparent transparent;
-    }
-
-    #globo::before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: -18px;
-      transform: translateY(-50%);
-      border-width: 18px 18px 18px 0;
-      border-style: solid;
-      border-color: transparent #e30613 transparent transparent;
+      border-color: #fffbe6 transparent transparent transparent;
     }
 
     @keyframes fadeInGlobo {
-      0% {
+      from {
         opacity: 0;
-        transform: scale(0.5) translateX(-20px);
+        transform: scale(0.8);
       }
-      50% {
-        opacity: 0.8;
-        transform: scale(1.05) translateX(5px);
-      }
-      100% {
+
+      to {
         opacity: 1;
-        transform: scale(1) translateX(0);
+        transform: scale(1);
       }
     }
 
@@ -219,69 +170,16 @@
         position: relative;
       }
 
-      /* En móvil, cambiar a layout vertical */
-      .main-content {
-        flex-direction: column !important;
-        align-items: center !important;
-        margin-top: 80px !important;
-      }
-
-      .guide-container {
-        margin-right: 0 !important;
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
       #guide {
         width: 120px;
-      }
-
-      #guide.appear {
-        animation: suricataAppearMobile 1.5s ease-out forwards;
-      }
-
-      @keyframes suricataAppearMobile {
-        0% {
-          opacity: 0;
-          transform: scale(0) rotate(360deg);
-        }
-        70% {
-          opacity: 1;
-          transform: scale(1.1) rotate(0deg);
-        }
-        100% {
-          opacity: 1;
-          transform: scale(1) rotate(0deg);
-        }
+        margin-bottom: 15px;
       }
 
       #globo {
-        position: relative !important;
-        top: auto !important;
-        left: auto !important;
-        font-size: 1.4rem;
+        font-size: 1.8rem;
         padding: 20px 25px;
         max-width: 90vw;
-        min-width: auto;
-        margin-top: 15px;
-      }
-
-      #globo::after {
-        top: -15px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-width: 0 15px 15px 15px;
-        border-color: transparent transparent #fffbe6 transparent;
-      }
-
-      #globo::before {
-        top: -18px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-width: 0 18px 18px 18px;
-        border-color: transparent transparent #e30613 transparent;
+        margin-bottom: 30px;
       }
 
       .start-button {
@@ -312,19 +210,18 @@
   <p>Aprendé sobre incendios y cómo apagarlos de forma segura</p>
 </header>
 
+<!-- QR abajo a la derecha -->
+<div id="qr-container">
+  <img
+    src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://fgarcia93mdz.github.io/con_fuego_aprendo/"
+    alt="Escanea para jugar en tu celular">
+</div>
+
 <!-- Contenido principal centrado -->
-<div class="main-content" style="display: flex; align-items: center; justify-content: center; flex: 1; margin-top: 120px; position: relative; width: 100%; max-width: 1200px;">
-  <!-- Suricata a la izquierda -->
-  <div class="guide-container" style="position: relative; margin-right: 50px;">
-    <img id="guide" src="guide.png" alt="Guía">
-    <!-- Globo de diálogo que sale de la suricata -->
-    <div id="globo">¡Hola, Bienvenidos a Maxiseguridad! Hoy vamos a aprender sobre extintores!</div>
-  </div>
-  
-  <!-- Botón a la derecha -->
-  <div style="display: flex; flex-direction: column; align-items: center; top: 300px; position: relative;">
-    <button class="start-button" onclick="window.location.href='aprendo.html'">¡Vamos a aprender!</button>
-  </div>
+<div style="display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; justify-content: center; margin-top: 120px;">
+  <img id="guide" src="guide.png" alt="Guía">
+  <div id="globo">¡Hola! Bienvenidos al simulador educativo de extintores 🔥🧯</div>
+  <button class="start-button" onclick="window.location.href='aprendo.html'">¡Vamos a aprender!</button>
 </div>
 
 <!-- Video invisible para evitar bloqueo de pantalla -->
@@ -343,46 +240,12 @@
     document.dispatchEvent(event);
   }, 30000);
 
-  // Variables para la animación
-  let animationInterval;
-  const guide = document.getElementById("guide");
-  const globo = document.getElementById("globo");
-
-  // Función para ejecutar la secuencia de animación
-  function playAnimationSequence() {
-    // 1. Resetear elementos
-    guide.classList.remove('appear', 'bounce');
-    globo.classList.remove('show');
-    
-    // 2. Iniciar con la suricata girando y apareciendo (1.5s)
-    setTimeout(() => {
-      guide.classList.add('appear');
-    }, 100);
-    
-    // 3. Después de que aparezca la suricata, iniciar el rebote (1.8s después del inicio)
-    setTimeout(() => {
-      guide.classList.remove('appear');
-      guide.classList.add('bounce');
-    }, 1800);
-    
-    // 4. Mostrar el globo después de que la suricata esté rebotando (2.5s después del inicio)
-    setTimeout(() => {
-      globo.classList.add('show');
-    }, 2500);
-    
-    console.log('Secuencia de animación ejecutada');
-  }
-
-  // Ejecutar la primera vez al cargar la página
+  // Animación de entrada del globo
   window.onload = () => {
+    const globo = document.getElementById("globo");
     setTimeout(() => {
-      playAnimationSequence();
-    }, 1000);
-    
-    // Repetir cada 2 minutos (120000 ms)
-    animationInterval = setInterval(() => {
-      playAnimationSequence();
-    }, 120000);
+      globo.style.animation = "fadeInGlobo 1s ease-out";
+    }, 500);
   };
 
   // Evitar que se duerma la pantalla con Wake Lock API si está disponible

@@ -207,6 +207,32 @@
       box-shadow: 0 12px 25px rgba(227, 6, 19, 0.4);
     }
 
+    /* Estilos para el contenido principal */
+    .main-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      margin-top: 120px;
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .guide-container {
+      position: relative;
+      margin-right: 50px;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      top: 500px;
+      left: -125px;
+    }
+
     @media screen and (max-width: 600px) {
       body {
         font-size: 16px;
@@ -290,6 +316,13 @@
         margin: 15px auto;
       }
 
+      .button-container {
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+        margin-top: 20px;
+      }
+
       #qr-container {
         right: 15px;
         bottom: 15px;
@@ -313,18 +346,23 @@
 </header>
 
 <!-- Contenido principal centrado -->
-<div class="main-content" style="display: flex; align-items: center; justify-content: center; flex: 1; margin-top: 120px; position: relative; width: 100%; max-width: 1200px;">
+<div class="main-content">
   <!-- Suricata a la izquierda -->
-  <div class="guide-container" style="position: relative; margin-right: 50px;">
+  <div class="guide-container">
     <img id="guide" src="guide.png" alt="Guía">
     <!-- Globo de diálogo que sale de la suricata -->
     <div id="globo">¡Hola, Bienvenidos a Maxiseguridad! Hoy vamos a aprender sobre extintores!</div>
   </div>
   
   <!-- Botón a la derecha -->
-  <div style="display: flex; flex-direction: column; align-items: center; top: 600px; left: -150px; position: relative;">
+  <div class="button-container">
     <button class="start-button" onclick="window.location.href='aprendo.html'">¡Vamos a aprender!</button>
   </div>
+</div>
+
+<!-- QR Code fijo -->
+<div id="qr-container">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://fgarcia93mdz.github.io/con_fuego_aprendo/" alt="QR para acceso móvil">
 </div>
 
 <!-- Video invisible para evitar bloqueo de pantalla -->

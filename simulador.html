@@ -225,6 +225,33 @@
       animation: incorrectAnim 0.7s;
     }
 
+    /* Botón de inicio */
+    #home-button {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 60px;
+      height: 60px;
+      background-color: var(--rojo);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(227, 6, 19, 0.3);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #home-button:hover {
+      background-color: #c5050f;
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(227, 6, 19, 0.4);
+    }
+
 
     @media screen and (max-width: 480px) {
       body {
@@ -299,6 +326,14 @@
         bottom: 8px;
         right: 8px;
         transform: scale(0.8);
+      }
+
+      #home-button {
+        bottom: 10px;
+        left: 10px;
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
       }
     }
   </style>
@@ -675,6 +710,11 @@
       });
     }
   </script>
+
+  <!-- Botón de inicio para volver al index -->
+  <button id="home-button" onclick="window.location.href='index.html'" title="Volver al inicio">
+    <i class="fas fa-home"></i>
+  </button>
 </body>
 
 </html>
